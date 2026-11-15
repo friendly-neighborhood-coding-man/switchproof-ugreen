@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#081729" />
+  <meta name="description" content="SwitchProof is an evidence-based Uliya Skill concept for auditing NAS migration integrity, without pretending that unchecked files were verified." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="SwitchProof — Know what made it across." />
+  <meta property="og:description" content="A read-only, evidence-based NAS migration audit Skill designed for UGREEN Uliya. Proposal-stage prototype; real NAS runtime not yet tested." />
+  <title>SwitchProof — Proof for NAS migrations</title>
+  <style>
+    :root{color-scheme:dark;--bg:#071425;--deep:#081a2b;--panel:#102339;--panel2:#132d43;--text:#eff8fc;--muted:#a5bacb;--line:#30465a;--mint:#56e6c0;--cyan:#7cc9fa;--blue:#4588f3}
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;min-width:320px;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6;background:var(--bg);color:var(--text)}
+    a{color:inherit;text-decoration:none}
+    a:focus-visible{outline:3px solid var(--mint);outline-offset:4px;border-radius:5px}
+    p{margin:.7rem 0 0}
+    .wrap{width:min(1120px,calc(100% - 40px));margin:0 auto}
+    .topbar{position:sticky;top:0;z-index:5;background:rgba(7,20,37,.9);border-bottom:1px solid rgba(134,168,191,.18);backdrop-filter:blur(14px)}
+    .topbar .wrap{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .logo{display:flex;gap:10px;align-items:center;font-size:1.23rem;letter-spacing:-.04em;font-weight:800;white-space:nowrap}
+    .logo-mark{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--cyan),var(--mint));color:#082436;display:grid;place-items:center;font-weight:900}
+    .logo span span{color:var(--mint)}
+    .links{display:flex;align-items:center;gap:23px;color:#c4d2df;font-size:.88rem;font-weight:650}
+    .links a:hover,.text-link:hover{color:var(--mint)}
+    .nav-cta{border:1px solid #54728c;padding:9px 15px;border-radius:10px}
+    .nav-cta:hover{background:#18344a}
+    .hero{overflow:hidden;position:relative;padding:94px 0 90px;background:radial-gradient(ellipse at 74% 36%,rgba(35,120,174,.19),transparent 38%),radial-gradient(ellipse at 12% 0%,rgba(34,201,169,.11),transparent 43%),linear-gradient(180deg,#0a1b30,#071425)}
+    .hero-inner{display:grid;grid-template-columns:1.05fr .95fr;gap:58px;align-items:center}
+    .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:.72rem;font-weight:800;letter-spacing:.14em;color:#8cebd1;text-transform:uppercase}
+    .eyebrow::before{content:"";width:7px;height:7px;background:var(--mint);box-shadow:0 0 14px var(--mint);border-radius:50%}
+    h1{font-size:clamp(2.75rem,5.4vw,5rem);line-height:1.055;letter-spacing:-.063em;margin:22px 0 24px;font-weight:850}
+    h1 em{font-style:normal;background:linear-gradient(110deg,#9fdaff,#58eac4);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .lead{font-size:1.07rem;color:#b8ccda;max-width:545px;line-height:1.77}
+    .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border-radius:11px;font-size:.93rem;font-weight:760;padding:13px 19px;transition:transform .15s ease,background .15s ease}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-primary{background:linear-gradient(115deg,#72edd0,#66cbed);color:#062238}
+    .btn-secondary{color:#d2e4ee;border:1px solid #4e6a80;background:#173047}
+    .btn-secondary:hover{background:#21405a}
+    .note{margin-top:23px;font-size:.81rem;color:#9fbbca}
+    .note strong{color:#dbeefa}
+    .visual{position:relative;isolation:isolate;border:1px solid #3b5b73;border-radius:24px;padding:25px;background:linear-gradient(155deg,#15324b 0%,#0b1b32 72%);box-shadow:0 25px 90px rgba(0,0,0,.33),inset 0 1px rgba(255,255,255,.07)}
+    .visual::before{content:"";position:absolute;inset:-16px;z-index:-1;background:radial-gradient(ellipse,#38c3c846,transparent 70%);filter:blur(35px)}
+    .visual-top{display:flex;justify-content:space-between;align-items:center;color:#aecfe0;font-size:.76rem;letter-spacing:.04em}
+    .visual-top .dots{display:flex;gap:6px}
+    .visual-top .dots span{height:7px;width:7px;background:#5a8ba5;border-radius:50%}
+    .visual-top .dots span:first-child{background:var(--mint)}
+    .network{display:grid;grid-template-columns:1fr 64px 1fr;align-items:center;gap:10px;margin:30px 0 22px}
+    .device{display:flex;flex-direction:column;align-items:center;gap:14px}
+    .nas-box{width:min(100%,147px);height:125px;display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#2b4863,#101f35);border:1px solid #65829a;border-radius:16px;box-shadow:inset 0 2px #5e829622,0 15px 18px #0004}
+    .nas-box.new{border-color:#49dbc8;box-shadow:0 0 28px #2fe4bc20,inset 0 2px #5e829622}
+    .bay{height:82px;width:26px;border-radius:7px;border:1px solid #708ca6;background:linear-gradient(#49667d,#243b52);position:relative}
+    .bay::after{content:"";position:absolute;bottom:9px;left:10px;width:6px;height:6px;background:#60e1c7;border-radius:50%}
+    .device-name{text-align:center;font-size:.79rem;color:#d5eaf5;font-weight:720}
+    .transfer{display:flex;justify-content:center;align-items:center;gap:5px;color:var(--mint)}
+    .transfer i{display:block;width:8px;height:8px;border-radius:100%;background:currentColor;opacity:.55}
+    .transfer i:nth-child(2){opacity:.8}
+    .transfer b{font-size:2rem;line-height:1}
+    .shield{display:flex;align-items:center;gap:12px;background:#0f2a3c;border:1px solid #3b6277;border-radius:14px;padding:14px 16px}
+    .shield-icon{width:46px;height:49px;border:2px solid #65ebc7;background:linear-gradient(145deg,#1f9e84,#0c504b);clip-path:polygon(50% 0%,98% 18%,94% 65%,50% 100%,6% 65%,2% 18%);display:grid;place-items:center;font-size:24px;font-weight:900}
+    .shield strong{display:block;font-size:.91rem}
+    .shield small{display:block;color:#a7c6d5;margin-top:2px;font-size:.75rem}
+    .checks{display:grid;gap:10px;margin-top:17px}
+    .check-row{display:flex;justify-content:space-between;align-items:center;border:1px solid #34516a;background:#10263d;border-radius:9px;padding:10px 13px;font-size:.82rem;color:#c7e0e9;gap:8px}
+    .check-row b{color:var(--mint);white-space:nowrap;font-size:.73rem;letter-spacing:.04em}
+    .sample{margin-top:15px;color:#93b0c4;font-size:.69rem;text-align:center}
+    .stats{border-top:1px solid #264055;border-bottom:1px solid #264055;background:#0c1d30}
+    .stats .wrap{display:grid;grid-template-columns:repeat(3,1fr)}
+    .stat{padding:29px 16px;text-align:center}
+    .stat+.stat{border-left:1px solid #284155}
+    .stat strong{display:block;font-size:1.8rem;letter-spacing:-.045em;line-height:1.3}
+    .stat span{display:block;color:#aec4d2;font-size:.81rem;margin-top:5px}
+    .stat small{display:block;color:#84a4b8;font-size:.68rem}
+    section.section{padding:90px 0}
+    .section-label{font-size:.72rem;font-weight:820;text-transform:uppercase;letter-spacing:.18em;color:var(--mint)}
+    h2{font-size:clamp(2rem,3.5vw,3rem);letter-spacing:-.05em;line-height:1.16;margin:13px 0 15px}
+    .section-intro{color:#b2c8d6;max-width:700px;font-size:1rem}
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:17px;margin-top:35px}
+    .feature{background:linear-gradient(165deg,#11283d,#0d2034);border:1px solid #2c495f;border-radius:17px;padding:25px}
+    .feature-icon{font-size:1.35rem;color:var(--mint);display:grid;place-items:center;width:44px;height:44px;border:1px solid #386f78;border-radius:11px;background:#143d48}
+    h3{font-size:1.13rem;line-height:1.3;margin:18px 0 8px;letter-spacing:-.015em}
+    .feature p{font-size:.9rem;color:#aac0cf;line-height:1.65}
+    .steps{margin-top:34px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .step{background:#10263a;border:1px solid #28475d;border-radius:15px;padding:23px}
+    .step-num{font-size:.73rem;font-weight:850;color:#65e3c2;letter-spacing:.13em}
+    .step h3{margin:11px 0 8px}
+    .step p{font-size:.87rem;color:#a7c4d2;margin:0}
+    .muted-section{background:#0b1d30;border-top:1px solid #1d364b;border-bottom:1px solid #1d364b}
+    .outcomes{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-top:31px}
+    .outcome{border:1px solid #3b556b;background:#102338;border-radius:14px;padding:20px}
+    .outcome h3{margin:0 0 9px;font-size:.84rem;letter-spacing:.05em}
+    .outcome p{font-size:.82rem;color:#abc4d0;margin:0}
+    .green{color:#6ae9c5}.amber{color:#ffcd88}.blue{color:#9cd3fc}.red{color:#ffabac}
+    .boundary{border:1px solid #4b6a7e;background:#152a3e;border-radius:17px;padding:24px 27px;margin-top:25px}
+    .boundary strong{color:#eaf8ff}
+    .boundary p{font-size:.92rem;color:#bdd2df}
+    .footer-cta{padding:73px 20px 78px;background:radial-gradient(ellipse at 50% 0,#185b6250,transparent 68%),#091b2b;text-align:center}
+    .footer-cta h2{margin:0 auto 14px;max-width:620px}
+    .footer-cta p{color:#b4ceda;max-width:580px;margin:0 auto 23px}
+    footer{border-top:1px solid #253e54;padding:25px 0;color:#92b1c1;font-size:.78rem}
+    footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px}
+    footer a{text-decoration:underline;text-underline-offset:3px}
+    @media(max-width:920px){.hero-inner{grid-template-columns:1fr;gap:42px}.hero{padding:67px 0}.visual{max-width:560px;width:100%;justify-self:center}.outcomes{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:650px){.wrap{width:min(100% - 32px,1120px)}.links a:not(.nav-cta){display:none}.topbar .wrap{min-height:62px}h1{font-size:clamp(2.65rem,11vw,4rem)}.hero{padding:62px 0}.features,.steps{grid-template-columns:1fr}.outcomes{grid-template-columns:1fr 1fr}.stats .wrap{grid-template-columns:1fr 1fr}.stat:nth-child(3){grid-column:1/-1;border-top:1px solid #284155}.stat:nth-child(3){border-left:0}.stat strong{font-size:1.45rem}.network{grid-template-columns:1fr 38px 1fr;gap:3px}.nas-box{height:95px;gap:5px}.bay{height:64px;width:20px}.bay::after{left:6px}.device-name{font-size:.69rem}.transfer i{display:none}.transfer b{font-size:1.6rem}.visual{padding:18px}.feature,.step{padding:21px}section.section{padding:67px 0}footer .wrap{display:block}footer .wrap span{display:block;margin-bottom:9px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <a class="logo" href="#top" aria-label="SwitchProof home"><span class="logo-mark" aria-hidden="true">S</span><span>Switch<span>Proof</span></span></a>
+      <nav class="links" aria-label="Main navigation">
+        <a href="#why">Why it matters</a><a href="#how">Workflow</a><a href="#evidence">Evidence</a>
+        <a class="nav-cta" href="https://github.com/friendly-neighborhood-coding-man/switchproof-ugreen">View on GitHub ↗</a>
+      </nav>
+    </div>
+  </header>
+  <main id="top">
+    <div class="hero">
+      <div class="wrap hero-inner">
+        <div>
+          <span class="eyebrow">UGREEN Uliya Skill · Round 1 prototype</span>
+          <h1>Before you switch NAS,<br><em>know what made it across.</em></h1>
+          <p class="lead">A completed copy job isn't proof that every file arrived intact. SwitchProof is a read-only, evidence-first AI Skill designed to check migration integrity — and say clearly what it <strong>cannot</strong> verify.</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="https://github.com/friendly-neighborhood-coding-man/switchproof-ugreen/blob/main/SKILL.md">Explore the Skill <span aria-hidden="true">↗</span></a>
+            <a class="btn btn-secondary" href="https://github.com/friendly-neighborhood-coding-man/switchproof-ugreen/blob/main/docs/validation-report.md">Read validation report</a>
+          </div>
+          <p class="note"><strong>Development status:</strong> Static checks and synthetic rule tests passed. <strong>Not yet tested on a real UGREEN NAS.</strong></p>
+        </div>
+        <div class="visual" role="img" aria-label="Concept diagram: an old NAS and a new AI NAS with an evidence verification audit between them; illustrative only, not a real product screenshot.">
+          <div class="visual-top"><span>SWITCHPROOF / FILE-CONTENT AUDIT</span><span class="dots" aria-hidden="true"><span></span><span></span><span></span></span></div>
+          <div class="network">
+            <div class="device"><div class="nas-box" aria-hidden="true"><span class="bay"></span><span class="bay"></span><span class="bay"></span></div><span class="device-name">Previous NAS</span></div>
+            <div class="transfer" aria-hidden="true"><i></i><i></i><b>→</b></div>
+            <div class="device"><div class="nas-box new" aria-hidden="true"><span class="bay"></span><span class="bay"></span><span class="bay"></span></div><span class="device-name">UGREEN NAS</span></div>
+          </div>
+          <div class="shield"><span class="shield-icon" aria-hidden="true">✓</span><div><strong>Proof before confidence.</strong><small>Check observations, not completion messages.</small></div></div>
+          <div class="checks"><div class="check-row"><span>Scoped inventory & coverage</span><b>REQUIRED</b></div><div class="check-row"><span>SHA-256 content evidence</span><b>REQUIRED</b></div><div class="check-row"><span>Unverified items & exceptions</span><b>DISCLOSED</b></div></div>
+          <div class="sample">Concept illustration · Not a live NAS result</div>
+        </div>
+      </div>
+    </div>
+    <div class="stats" id="evidence">
+      <div class="wrap">
+        <div class="stat"><strong>43/43</strong><span>Synthetic scenarios passed</span><small>Deterministic reference model</small></div>
+        <div class="stat"><strong>0 errors</strong><span>Official-kit static check</span><small>4 dynamic-value warnings remain</small></div>
+        <div class="stat"><strong>Not tested</strong><span>Real NAS runtime</span><small>Compatibility remains unverified</small></div>
+      </div>
+    </div>
+    <section class="section" id="why">
+      <div class="wrap">
+        <span class="section-label">The problem</span>
+        <h2>A copy-complete message is not a migration audit.</h2>
+        <p class="section-intro">When moving from an established NAS platform, users need confidence that their file data is still there. SwitchProof separates what was observed from what was merely assumed.</p>
+        <div class="features">
+          <article class="feature"><span class="feature-icon" aria-hidden="true">≠</span><h3>Names aren't content</h3><p>A familiar file path doesn't prove the bytes match. The proposed workflow uses hashes and metadata as evidence.</p></article>
+          <article class="feature"><span class="feature-icon" aria-hidden="true">◎</span><h3>Coverage isn't automatic</h3><p>Limited listings, inaccessible folders and unknown counts should never become an invented 100% result.</p></article>
+          <article class="feature"><span class="feature-icon" aria-hidden="true">⌁</span><h3>Uncertainty matters</h3><p>Incomplete or ambiguous observations are reported honestly, rather than disguised as a successful migration.</p></article>
+        </div>
+      </div>
+    </section>
+    <section class="section muted-section" id="how">
+      <div class="wrap">
+        <span class="section-label">Orchestrated, not scripted</span>
+        <h2>Six gates. One evidence standard.</h2>
+        <p class="section-intro">SwitchProof is a SKILL.md workflow designed for Uliya's supported expert agents — not a standalone executable plugin.</p>
+        <div class="steps">
+          <article class="step"><span class="step-num">GATE 00</span><h3>Preflight</h3><p>Confirm authorized, accessible roots and reject overlapping source/destination paths.</p></article>
+          <article class="step"><span class="step-num">GATE 01</span><h3>Discover</h3><p>Enumerate what the tools actually return, tracking truncated or uncertain listings.</p></article>
+          <article class="step"><span class="step-num">GATE 02</span><h3>Verify</h3><p>Collect file metadata and SHA-256 evidence before and after inspection.</p></article>
+          <article class="step"><span class="step-num">GATE 03</span><h3>Reconcile</h3><p>Match file occurrences one-to-one, accounting for renamed paths and duplicates.</p></article>
+          <article class="step"><span class="step-num">GATE 04</span><h3>Audit</h3><p>Apply conservative completion rules; never promote missing evidence into success.</p></article>
+          <article class="step"><span class="step-num">GATE 05</span><h3>Report</h3><p>Explain verified scope and limitations. Save a report only with user approval.</p></article>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="wrap">
+        <span class="section-label">Clear outcomes</span>
+        <h2>Four results. No false certainty.</h2>
+        <div class="outcomes">
+          <article class="outcome"><h3 class="green">VERIFIED</h3><p>All required file occurrences in a nonempty, defined scope have complete matching evidence.</p></article>
+          <article class="outcome"><h3 class="amber">MISMATCH</h3><p>Complete, trustworthy evidence shows missing or modified file content.</p></article>
+          <article class="outcome"><h3 class="blue">INCOMPLETE</h3><p>Coverage or evidence is missing, unstable or ambiguous.</p></article>
+          <article class="outcome"><h3 class="red">BLOCKED</h3><p>A required path, authorization or other prerequisite is unavailable.</p></article>
+        </div>
+        <div class="boundary">
+          <strong>What it does not claim</strong>
+          <p>Matching file hashes do <em>not</em> prove preservation of user permissions, application data, album metadata, snapshots or successful recovery. A “VERIFIED” result applies to its explicitly defined file-content scope only. The real UGREEN runtime, file-agent responses and third-party share access remain untested.</p>
+        </div>
+      </div>
+    </section>
+    <div class="footer-cta">
+      <h2>Switch NAS with evidence, not assumptions.</h2>
+      <p>Explore the open Skill specification, read the transparent validation report, or follow the project as target-device testing proceeds.</p>
+      <div class="actions" style="justify-content:center">
+        <a class="btn btn-primary" href="https://github.com/friendly-neighborhood-coding-man/switchproof-ugreen">Open GitHub repository ↗</a>
+        <a class="btn btn-secondary" href="https://github.com/friendly-neighborhood-coding-man/switchproof-ugreen/blob/main/docs/validation-report.md">Inspect the evidence</a>
+      </div>
+    </div>
+  </main>
+  <footer><div class="wrap"><span>SwitchProof · UGREEN AI NAS Hackathon 2026 · Independent prototype</span><span>Not affiliated with or endorsed by UGREEN · <a href="https://github.com/friendly-neighborhood-coding-man/switchproof-ugreen">Source & updates</a></span></div></footer>
+</body>
+</html>
